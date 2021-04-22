@@ -15,16 +15,18 @@ racine = tk.Tk()
 racine.title("simulation d'avion")
 
 
-### CONSTANTES
+# # # CONSTANTES
 
 CANVAS_HEIGHT = 600
-CANVAS_WIDTH= 140
+CANVAS_WIDTH = 140
 COTE = 20
 
-### FONCTIONS
+# # # FONCTIONS
+
 
 def demarrer():
     pass
+
 
 def quadrillage():
     i = 0
@@ -36,18 +38,17 @@ def quadrillage():
         i += COTE
         j = 0
         print(i)
-            
 
-### WIDGETS
+
+# # # WIDGETS
 
 avion = tk.Canvas(racine, height=CANVAS_HEIGHT, width=CANVAS_WIDTH, bg='blue')
 bouton_demarrer = tk.Button(racine, text='démarrer', command=demarrer)
-#Statistiques = 
-#informations_avion
+# Statistiques =
+# informations_avion
 
 
-
-### POSITIONNEMENT
+# # # POSITIONNEMENT
 
 avion.grid(row=0, column=1)
 bouton_demarrer.grid(row=0, column=0)
