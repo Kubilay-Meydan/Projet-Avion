@@ -18,7 +18,7 @@ racine.title("simulation d'avion")
 # CONSTANTES
 
 CANVAS_HEIGHT = 600
-CANVAS_WIDTH= 140
+CANVAS_WIDTH = 140
 COTE = 20
 COULEUR_COULOIR = 'grey'
 COULEUR_PASSAGER_0_BAGAGE = 'cyan'
@@ -27,9 +27,41 @@ COULEUR_PASSAGER_2_BAGAGE = 'blue'
 COULEUR_SIEGE_VIDE = 'blue'
 COULEUR_SIEGE_OCCUPE = 'green'
 COULEUR_SIEGE_REMPLI = 'yellow'
+NB_RANG = 30
+NB_COLONNE = 7
 
 #########################################
 # FONCTIONS
+
+
+def convertit_siege_identifiant(x, y):  # colonne, rang
+    """Cette fonction prend en argument x et y qui sont les coordonnées d'où se
+    trouve un passager (ou bien où il doit aller).
+    Convertit ces coordonnées en identifiant de canvas.
+    Returne l'identifiant du canevas"""
+
+    global NB_COLONNE, NB_RANG
+
+    identifiant = 0
+    for i in range(1, NB_RANG+1):
+        for j in range(1, NB_COLONNE+1):
+            identifiant += 1
+            if x == j and y == i:
+                return identifiant
+
+
+def entreePassager(liste):
+    """ Prend en argument la liste d'un passager qui n'est pas dans l'avion.
+    Test si un nouveau passager peut entrer dans l'avion.
+    Si oui il rentre et on ajoute ses coordonnées actuelles à la liste la
+    représentant. Sinon rien ne se passe."""
+
+    if (avion.itemcget((convertit_siege_identifiant(4, 1)), "fill")) == "blue":
+        avion.itemconfigure(convertit_siege_identifiant(4, 1), fill=liste[3])  # Liste à changer selon liste Alix.
+        liste.extend([4, 1])
+
+        # Faire une liste qui regroupe tous les passagers actuellement dans l'avion ?
+
 
 def demarrer():
     #fonction démarrant la simulation
