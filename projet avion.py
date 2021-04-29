@@ -50,13 +50,13 @@ def convertit_siege_identifiant(x, y):  # colonne, rang
                 return identifiant
 
 
-def entreePassager(liste):
+def entree_passager(liste):
     """ Prend en argument la liste d'un passager qui n'est pas dans l'avion.
     Test si un nouveau passager peut entrer dans l'avion.
     Si oui il rentre et on ajoute ses coordonnées actuelles à la liste la
     représentant. Sinon rien ne se passe."""
 
-    if (avion.itemcget((convertit_siege_identifiant(4, 1)), "fill")) == "blue":
+    if (avion.itemcget((convertit_siege_identifiant(4, 1)), "fill")) == COULEUR_SIEGE_VIDE:
         avion.itemconfigure(convertit_siege_identifiant(4, 1), fill=liste[3])  # Liste à changer selon liste Alix.
         liste.extend([4, 1])
 
