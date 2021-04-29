@@ -14,8 +14,8 @@ import tkinter as tk
 racine = tk.Tk()
 racine.title("simulation d'avion")
 
-
-### CONSTANTES
+#########################################
+# CONSTANTES
 
 CANVAS_HEIGHT = 600
 CANVAS_WIDTH= 140
@@ -28,8 +28,8 @@ COULEUR_SIEGE_VIDE = 'blue'
 COULEUR_SIEGE_OCCUPE = 'green'
 COULEUR_SIEGE_REMPLI = 'yellow'
 
-
-### FONCTIONS
+#########################################
+# FONCTIONS
 
 def demarrer():
     #fonction démarrant la simulation
@@ -69,17 +69,17 @@ def recommencer():
 def quadrillage():
     i = 0
     j = 0
-    while i <= CANVAS_WIDTH:
-        while j <= CANVAS_HEIGHT:
-            avion.create_rectangle(i, j, i+COTE, j+COTE)
-            j += COTE
-        i += COTE
-        j = 0
+    while j <= CANVAS_HEIGHT:
+        while i <= CANVAS_WIDTH:
+            avion.create_rectangle(i, j, i+COTE, j+COTE, fill="blue")
+            i += COTE
+        j += COTE
+        i = 0
             
+#########################################
+# WIDGETS
 
-### WIDGETS
-
-avion = tk.Canvas(racine, height=CANVAS_HEIGHT, width=CANVAS_WIDTH, bg='blue')
+avion = tk.Canvas(racine, height=CANVAS_HEIGHT, width=CANVAS_WIDTH)
 bouton_demarrer = tk.Button(racine, text='démarrer', command=demarrer)
 bouton_arreter = tk.Button(racine, text='arrêter', command=arreter)
 bouton_pause = tk.Button(racine, text='pause', command=pause)
@@ -89,8 +89,8 @@ bouton_etape_par_etape = tk.Button(racine, text='étape par étape', command=eta
 bouton_recommencer = tk.Button(racine, text='recommencer', command=recommencer)
 
 
-
-### POSITIONNEMENT
+#########################################
+# POSITIONNEMENT
 
 avion.grid(row=0, column=1, rowspan=7)
 bouton_demarrer.grid(row=0, column=0)
@@ -103,5 +103,6 @@ bouton_recommencer.grid(row=6, column=0)
 
 
 avion.bind(quadrillage())
+avion.itemconfigure(2, fill="yellow")
 
 racine.mainloop()
