@@ -135,6 +135,5 @@ bouton_recommencer.grid(row=6, column=0)
 
 
 avion.bind(quadrillage())
-avion.itemconfigure(2, fill="yellow")
 
 racine.mainloop()
