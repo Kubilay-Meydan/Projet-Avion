@@ -69,12 +69,13 @@ def recommencer():
 def quadrillage():
     i = 0
     j = 0
-    while i <= CANVAS_WIDTH:
+    while i < CANVAS_WIDTH:
         while j <= CANVAS_HEIGHT:
             avion.create_rectangle(i, j, i+COTE, j+COTE)
             j += COTE
         i += COTE
         j = 0
+
             
 
 ### WIDGETS
