@@ -76,14 +76,8 @@ def passagers(mat):
 
 def interdit(x, y):
     global interdit_x, interdit_y, count_x, count_y
-
-    count_x.append(x)
-    count_y.append(y)
-
-    if count_x.count(x) >= 31:
-        interdit_x.append(x)
-    if count_y.count(y) >= 7:
-        interdit_y.append(y)
+#########################################
+# FONCTIONS
 
 
 def convertit_siege_identifiant(x, y):  # colonne, rang
