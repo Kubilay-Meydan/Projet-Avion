@@ -52,7 +52,7 @@ count_y = []
 def passagers(mat):
     global mat_2, interdit_x, interdit_y
 
-    x = choice([i for i in range(1, 5) if i not in interdit_x])
+    x = choice([i for i in range(1, 8) if i not in interdit_x])
     y = choice([i for i in range(1, 31) if i not in interdit_y])
     mat.append([[x, y]])
 
