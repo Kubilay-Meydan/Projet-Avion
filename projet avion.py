@@ -10,11 +10,15 @@
 
 
 import tkinter as tk
+import random as rd
+from random import choice
+import copy
+
 
 racine = tk.Tk()
 racine.title("simulation d'avion")
 
-
+#########################################
 # CONSTANTES
 
 CANVAS_HEIGHT = 600
@@ -27,19 +31,88 @@ COULEUR_PASSAGER_2_BAGAGE = 'blue'
 COULEUR_SIEGE_VIDE = 'blue'
 COULEUR_SIEGE_OCCUPE = 'green'
 COULEUR_SIEGE_REMPLI = 'yellow'
+NB_RANG = 30
+NB_COLONNE = 7
 
 
-# MATRICE PASSAGERS
+#########################################
+# VARIABLES
 
-list_pass = [[coord], nb_bagages, couleur_entrée]
+mat_passagers = []
+mat_2 = []
+interdit_x = [4]
+interdit_y = []
+count_x = []
+count_y = []
 
-mat_pass = []
-for i in range(180):
-    
 
-
-
+#########################################
 # FONCTIONS
+
+def passagers(mat):
+    global mat_2, interdit_x, interdit_y
+
+    x = choice([i for i in range(1, 5) if i not in interdit_x])
+    y = choice([i for i in range(1, 31) if i not in interdit_y])
+    mat.append([[x, y]])
+
+    while mat[-1] in mat_2:
+        x = choice([i for i in range(1, 8) if i not in interdit_x])
+        y = choice([i for i in range(1, 31) if i not in interdit_y])
+        mat.append([x, y])
+    mat_2 = mat.copy()
+
+    interdit(x, y)
+
+    # bagages + couleur
+    mat[-1].append(rd.randint(0, 3))
+
+    if mat[-1][1] == 0:
+        mat[-1].append(COULEUR_PASSAGER_0_BAGAGE)
+    else:
+        mat[-1].append(COULEUR_PASSAGER_2_BAGAGE)
+
+
+def interdit(x, y):
+    global interdit_x, interdit_y, count_x, count_y
+
+    count_x.append(x)
+    count_y.append(y)
+
+    if count_x.count(x) >= 31:
+        interdit_x.append(x)
+    if count_y.count(y) >= 7:
+        interdit_y.append(y)
+
+
+def convertit_siege_identifiant(x, y):  # colonne, rang
+    """Cette fonction prend en argument x et y qui sont les coordonnées d'où se
+    trouve un passager (ou bien où il doit aller).
+    Convertit ces coordonnées en identifiant de canvas.
+    Returne l'identifiant du canevas"""
+
+    global NB_COLONNE, NB_RANG
+
+    identifiant = 0
+    for i in range(1, NB_RANG+1):
+        for j in range(1, NB_COLONNE+1):
+            identifiant += 1
+            if x == j and y == i:
+                return identifiant
+
+
+def entree_passager(liste):
+    """ Prend en argument la liste d'un passager qui n'est pas dans l'avion.
+    Test si un nouveau passager peut entrer dans l'avion.
+    Si oui il rentre et on ajoute ses coordonnées actuelles à la liste la
+    représentant. Sinon rien ne se passe."""
+
+    if (avion.itemcget((convertit_siege_identifiant(4, 1)), "fill")) == COULEUR_SIEGE_VIDE:
+        avion.itemconfigure(convertit_siege_identifiant(4, 1), fill=liste[3])  # Liste à changer selon liste Alix.
+        liste.extend([4, 1])
+
+        # Faire une liste qui regroupe tous les passagers actuellement dans l'avion ?
+
 
 def demarrer():
     # fonction démarrant la simulation
@@ -79,17 +152,18 @@ def recommencer():
 def quadrillage():
     i = 0
     j = 0
-    while i <= CANVAS_WIDTH:
-        while j <= CANVAS_HEIGHT:
-            avion.create_rectangle(i, j, i+COTE, j+COTE)
-            j += COTE
-        i += COTE
-        j = 0
+    while j <= CANVAS_HEIGHT:
+        while i <= CANVAS_WIDTH:
+            avion.create_rectangle(i, j, i+COTE, j+COTE, fill="blue")
+            i += COTE
+        j += COTE
+        i = 0
 
-
+#########################################
 # WIDGETS
 
-avion = tk.Canvas(racine, height=CANVAS_HEIGHT, width=CANVAS_WIDTH, bg='blue')
+
+avion = tk.Canvas(racine, height=CANVAS_HEIGHT, width=CANVAS_WIDTH)
 bouton_demarrer = tk.Button(racine, text='démarrer', command=demarrer)
 bouton_arreter = tk.Button(racine, text='arrêter', command=arreter)
 bouton_pause = tk.Button(racine, text='pause', command=pause)
@@ -100,6 +174,7 @@ bouton_etape_par_etape = tk.Button(racine, text='étape par étape',
 bouton_recommencer = tk.Button(racine, text='recommencer', command=recommencer)
 
 
+#########################################
 # POSITIONNEMENT
 
 avion.grid(row=0, column=1, rowspan=7)
@@ -113,5 +188,11 @@ bouton_recommencer.grid(row=6, column=0)
 
 
 avion.bind(quadrillage())
+
+
+#########################################
+for i in range(25):
+    passagers(mat_passagers)
+
 
 racine.mainloop()
