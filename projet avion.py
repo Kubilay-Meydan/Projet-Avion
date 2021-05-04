@@ -10,6 +10,10 @@
 
 
 import tkinter as tk
+import random as rd
+from random import choice
+import copy
+
 
 racine = tk.Tk()
 racine.title("simulation d'avion")
@@ -30,8 +34,56 @@ COULEUR_SIEGE_REMPLI = 'yellow'
 NB_RANG = 30
 NB_COLONNE = 7
 
+
+#########################################
+# VARIABLES
+
+mat_passagers = []
+mat_2 = []
+interdit_x = [4]
+interdit_y = []
+count_x = []
+count_y = []
+
+
 #########################################
 # FONCTIONS
+
+def passagers(mat):
+    global mat_2, interdit_x, interdit_y
+
+    x = choice([i for i in range(1, 8) if i not in interdit_x])
+    y = choice([i for i in range(1, 31) if i not in interdit_y])
+    mat.append([[x, y]])
+
+    while mat[-1] in mat_2:
+        del mat[-1]
+        x = choice([i for i in range(1, 8) if i not in interdit_x])
+        y = choice([i for i in range(1, 31) if i not in interdit_y])
+        mat.append([x, y])
+    mat_2 = mat.copy()
+
+    interdit(x, y)
+
+    # bagages + couleur
+    mat[-1].append(rd.randint(0, 3))
+
+    if mat[-1][1] == 0:
+        mat[-1].append(COULEUR_PASSAGER_0_BAGAGE)
+    else:
+        mat[-1].append(COULEUR_PASSAGER_2_BAGAGE)
+
+
+def interdit(x, y):
+    global interdit_x, interdit_y, count_x, count_y
+
+    count_x.append(x)
+    count_y.append(y)
+
+    if count_x.count(x) >= 31:
+        interdit_x.append(x)
+    if count_y.count(y) >= 7:
+        interdit_y.append(y)
 
 
 def convertit_siege_identifiant(x, y):  # colonne, rang
@@ -64,37 +116,37 @@ def entree_passager(liste):
 
 
 def demarrer():
-    #fonction démarrant la simulation
+    # fonction démarrant la simulation
     pass
 
 
 def arreter():
-    #fonction arrêtant la simulation
+    # fonction arrêtant la simulation
     pass
 
 
 def pause():
-    #fonction mettant la simulation en pause
+    # fonction mettant la simulation en pause
     pass
 
 
 def relancer():
-    #fonction relançant la simulation après l'avoir mis en pause
+    # fonction relançant la simulation après l'avoir mis en pause
     pass
 
 
 def etape_1():
-    #fonction permettant d'avancer la simulation d'une étape 
+    # fonction permettant d'avancer la simulation d'une étape
     pass
 
 
 def etape_par_etape():
-    #fonction permmettant de 
+    # fonction permmettant de
     pass
 
 
 def recommencer():
-    #fonction permettant de recommencer la simulation du début
+    # fonction permettant de recommencer la simulation du début
     pass
 
 
@@ -108,9 +160,13 @@ def quadrillage():
         j += COTE
         i = 0
 
+<<<<<<< HEAD
             
+=======
+>>>>>>> 9d270f8f3788c4be5584ee99b4c4358a1219e4f2
 #########################################
 # WIDGETS
+
 
 avion = tk.Canvas(racine, height=CANVAS_HEIGHT, width=CANVAS_WIDTH)
 bouton_demarrer = tk.Button(racine, text='démarrer', command=demarrer)
@@ -118,7 +174,8 @@ bouton_arreter = tk.Button(racine, text='arrêter', command=arreter)
 bouton_pause = tk.Button(racine, text='pause', command=pause)
 bouton_relancer = tk.Button(racine, text='relancer', command=relancer)
 bouton_etape_1 = tk.Button(racine, text='étape +1', command=etape_1)
-bouton_etape_par_etape = tk.Button(racine, text='étape par étape', command=etape_par_etape)
+bouton_etape_par_etape = tk.Button(racine, text='étape par étape',
+                                   command=etape_par_etape)
 bouton_recommencer = tk.Button(racine, text='recommencer', command=recommencer)
 
 
@@ -136,5 +193,11 @@ bouton_recommencer.grid(row=6, column=0)
 
 
 avion.bind(quadrillage())
+
+
+#########################################
+for i in range(25):
+    passagers(mat_passagers)
+
 
 racine.mainloop()
