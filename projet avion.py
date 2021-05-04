@@ -117,14 +117,19 @@ def entree_passager(liste):
     Test si un nouveau passager peut entrer dans l'avion.
     Si oui il rentre et on ajoute ses coordonnées actuelles à la liste la
     représentant. Sinon rien ne se passe."""
-    global compteur_passager
+
+    # Pas sur que ca fonctionne bien 
+    
+    global compteur_passager, liste_passager_in
 
     compteur_passager += 1 # Prend le passager suivant dans la liste de tous les passagers
 
-    # if (avion.itemcget((convertit_siege_identifiant(4, 1)), "fill")) == COULEUR_SIEGE_VIDE:
-    #     avion.itemconfigure(convertit_siege_identifiant(4, 1), fill=liste[compteur_passager][2])
-    #     liste[compteur_passager].extend([4, 1])
-    # Ne fonctionne peut etre pas, pas encore tester
+    if (avion.itemcget((convertit_siege_identifiant(4, 1)), "fill")) == COULEUR_SIEGE_VIDE:
+        avion.itemconfigure(convertit_siege_identifiant(4, 1), fill=liste[compteur_passager][2])
+        liste_passager_in.append(liste[compteur_passager])
+        liste_passager_in[compteur_passager].extend([4, 1])
+
+        return liste_passager_in
 
 
 
@@ -209,6 +214,5 @@ avion.bind(quadrillage())
 for i in range(180):
     passagers(mat_passagers)
 
-# entree_passager(mat_passagers)
 
 racine.mainloop()
