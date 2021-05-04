@@ -88,10 +88,12 @@ def interdit(x, y):
     count_x.append(x)
     count_y.append(y)
 
-    if count_x.count(x) >= NB_COLONNE:
+    if count_x.count(x) >= 30:
         interdit_x.append(x)
-    if count_y.count(y) >= NB_RANG:
+        print(interdit_x)
+    if count_y.count(y) >= 6:
         interdit_y.append(y)
+        print(interdit_y)
 
 
 def convertit_siege_identifiant(x, y):  # colonne, rang
@@ -203,6 +205,9 @@ avion.bind(quadrillage())
 #########################################
 for i in range(180):
     passagers(mat_passagers)
+    print(i)
+
+print(mat_passagers)
 
 
 racine.mainloop()
