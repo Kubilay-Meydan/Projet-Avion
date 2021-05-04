@@ -50,6 +50,8 @@ count_y = []
 # FONCTIONS
 
 def passagers(mat):
+    '''Créer un passager [[destination], bagage, couleur] dans une matrice'''
+
     global mat_2, interdit_x, interdit_y
 
     x = choice([i for i in range(1, 8) if i not in interdit_x])
@@ -66,21 +68,27 @@ def passagers(mat):
     interdit(x, y)
 
     # bagages + couleur
-    mat[-1].append(rd.randint(0, 3))
+    mat[-1].append(rd.randint(0, 2))
 
     if mat[-1][1] == 0:
         mat[-1].append(COULEUR_PASSAGER_0_BAGAGE)
+    elif mat[-1][1] == 1:
+        mat[-1].append(COULEUR_PASSAGER_1_BAGAGE)
     else:
         mat[-1].append(COULEUR_PASSAGER_2_BAGAGE)
 
 
 def interdit(x, y):
+    '''Compte combien de fois x, y sont apparus.
+    Si x est apparu 30 fois ou y est apparu 7 fois, il est enlevé des
+    possibilités de choix pour les places'''
+
     global interdit_x, interdit_y, count_x, count_y
 
     count_x.append(x)
     count_y.append(y)
 
-    if count_x.count(x) >= 31:
+    if count_x.count(x) >= 30:
         interdit_x.append(x)
     if count_y.count(y) >= 7:
         interdit_y.append(y)
