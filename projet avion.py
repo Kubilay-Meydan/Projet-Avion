@@ -88,9 +88,9 @@ def interdit(x, y):
     count_x.append(x)
     count_y.append(y)
 
-    if count_x.count(x) >= 30:
+    if count_x.count(x) >= NB_COLONNE:
         interdit_x.append(x)
-    if count_y.count(y) >= 7:
+    if count_y.count(y) >= NB_RANG:
         interdit_y.append(y)
 
 
@@ -168,7 +168,7 @@ def quadrillage():
         j += COTE
         i = 0
 
-            
+
 #########################################
 # WIDGETS
 
@@ -201,7 +201,7 @@ avion.bind(quadrillage())
 
 
 #########################################
-for i in range(25):
+for i in range(180):
     passagers(mat_passagers)
 
 
