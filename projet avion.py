@@ -105,7 +105,6 @@ def quadrillage():
         while i < CANVAS_WIDTH:
             avion.create_rectangle(i, j, i+COTE, j+COTE, fill="blue")
             i += COTE
-            print(i)
         j += COTE
         i = 0
 
