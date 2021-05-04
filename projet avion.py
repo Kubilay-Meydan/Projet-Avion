@@ -26,8 +26,8 @@ CANVAS_WIDTH = 140
 COTE = 20
 COULEUR_COULOIR = 'grey'
 COULEUR_PASSAGER_0_BAGAGE = 'cyan'
-COULEUR_PASSAGER_1_BAGAGE = 'blue'
-COULEUR_PASSAGER_2_BAGAGE = 'blue'
+COULEUR_PASSAGER_1_BAGAGE = 'mediumorchid1'
+COULEUR_PASSAGER_2_BAGAGES = 'red'
 COULEUR_SIEGE_VIDE = 'blue'
 COULEUR_SIEGE_OCCUPE = 'green'
 COULEUR_SIEGE_REMPLI = 'yellow'
@@ -38,12 +38,14 @@ NB_COLONNE = 7
 #########################################
 # VARIABLES
 
-mat_passagers = []
+mat_passagers = [] # Liste de tous les passages
 mat_2 = []
+liste_passager_in=[] # Liste des passagers actuellement dans l'avion.
 interdit_x = [4]
 interdit_y = []
 count_x = []
 count_y = []
+compteur_passager = -1
 
 
 #########################################
@@ -75,7 +77,7 @@ def passagers(mat):
     elif mat[-1][1] == 1:
         mat[-1].append(COULEUR_PASSAGER_1_BAGAGE)
     else:
-        mat[-1].append(COULEUR_PASSAGER_2_BAGAGE)
+        mat[-1].append(COULEUR_PASSAGER_2_BAGAGES)
 
 
 def interdit(x, y):
@@ -118,11 +120,19 @@ def entree_passager(liste):
     Si oui il rentre et on ajoute ses coordonnées actuelles à la liste la
     représentant. Sinon rien ne se passe."""
 
-    if (avion.itemcget((convertit_siege_identifiant(4, 1)), "fill")) == COULEUR_SIEGE_VIDE:
-        avion.itemconfigure(convertit_siege_identifiant(4, 1), fill=liste[3])  # Liste à changer selon liste Alix.
-        liste.extend([4, 1])
+    # Pas sur que ca fonctionne bien 
+    
+    global compteur_passager, liste_passager_in
 
-        # Faire une liste qui regroupe tous les passagers actuellement dans l'avion ?
+    compteur_passager += 1 # Prend le passager suivant dans la liste de tous les passagers
+
+    if (avion.itemcget((convertit_siege_identifiant(4, 1)), "fill")) == COULEUR_SIEGE_VIDE:
+        avion.itemconfigure(convertit_siege_identifiant(4, 1), fill=liste[compteur_passager][2])
+        liste_passager_in.append(liste[compteur_passager])
+        liste_passager_in[compteur_passager].extend([4, 1])
+
+        return liste_passager_in
+
 
 
 def demarrer():
