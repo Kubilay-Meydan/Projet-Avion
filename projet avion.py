@@ -92,10 +92,8 @@ def interdit(x, y):
 
     if count_x.count(x) >= 30:
         interdit_x.append(x)
-        print(interdit_x)
     if count_y.count(y) >= 6:
         interdit_y.append(y)
-        print(interdit_y)
 
 
 def convertit_siege_identifiant(x, y):  # colonne, rang
@@ -119,19 +117,15 @@ def entree_passager(liste):
     Test si un nouveau passager peut entrer dans l'avion.
     Si oui il rentre et on ajoute ses coordonnées actuelles à la liste la
     représentant. Sinon rien ne se passe."""
-
-    # Pas sur que ca fonctionne bien 
     
     global compteur_passager, liste_passager_in
 
-    compteur_passager += 1 # Prend le passager suivant dans la liste de tous les passagers
 
     if (avion.itemcget((convertit_siege_identifiant(4, 1)), "fill")) == COULEUR_SIEGE_VIDE:
+        compteur_passager += 1 # Prend le passager suivant dans la liste de tous les passagers
         avion.itemconfigure(convertit_siege_identifiant(4, 1), fill=liste[compteur_passager][2])
         liste_passager_in.append(liste[compteur_passager])
         liste_passager_in[compteur_passager].extend([4, 1])
-
-        return liste_passager_in
 
 
 
@@ -215,9 +209,7 @@ avion.bind(quadrillage())
 #########################################
 for i in range(180):
     passagers(mat_passagers)
-    print(i)
 
-print(mat_passagers)
-
+# print(mat_passagers)
 
 racine.mainloop()
