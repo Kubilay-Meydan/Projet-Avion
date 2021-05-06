@@ -35,6 +35,7 @@ NB_RANG = 30
 NB_COLONNE = 7
 NB_PASSAGERS_MAX = 180
 X_COULOIR = 4 
+TPS_ETAPES = 50  # temps entre chaque étape
 
 #########################################
 # VARIABLES
@@ -48,7 +49,6 @@ interdit_y = []
 count_x = []
 count_y = []
 compteur_passager = -1
-tps_etape = 50  # temps entre chaque étape
 compteur_passager_assis = 0
 
 #########################################
@@ -132,7 +132,10 @@ def entree_passager():
 
 
 def deplace_passagers_in():
-    "Déplace tous les passages qui sont dans l'avion pour une étape, et on fait rentrer si possible."
+    """Déplace tous les passages qui sont actuellement dans l'avion.
+    Fait entrer un passager si possible. 
+    La fonction est répétée tous les TPS_ETAPES."""
+
     global liste_passagers_in
 
     if liste_passagers_in != []:
@@ -141,18 +144,29 @@ def deplace_passagers_in():
 
         entree_passager()
 
-    avion.after(tps_etape, lambda: deplace_passagers_in())
+    avion.after(TPS_ETAPES, lambda: deplace_passagers_in())
 
 
 def convertisseur_couleur_case(x, y, couleur):
+    """Prend en entrée les coordonnées x et y d'une case et une couleur.
+    Puis associe cette couleur à la case."""
+
     avion.itemconfig((convertit_siege_identifiant(x, y)), fill=couleur)
 
 
 def swipe_place(liste, n1, x_prime, y_prime):
+    """Permet de faire échanger deux places à des passagers, si l'un bloque
+    l'autre dans une rangée.
+
+    Prend en arguments:
+    liste --> la liste de tous les passagers acutellement dans l'avion.
+    n1 --> l'indice auquel se trouve le passager qui est bloqué dans la liste.
+    x_prime --> la coordonnée x où veut aller le passager n1
+    y_prime --> la coordonnée y où veut aller le passager n1"""
 
     # print("liste après", liste, "\n")
     if [[x_prime, y_prime], 0, COULEUR_SIEGE_REMPLI, [x_prime, y_prime]] in liste:
-        n2 = liste.index([[x_prime, y_prime], 0, COULEUR_SIEGE_REMPLI, [x_prime, y_prime]])
+        n2 = liste.index([[x_prime, y_prime], 0, COULEUR_SIEGE_REMPLI, [x_prime, y_prime]])  # Cherche le passager avec qui n1 doit échanger sa place.
         # print(n1, n2)
         # print((liste[n1]), liste[n2])
         liste[n2][3][0], liste[n1][3][0] = liste[n1][3][0], liste[n2][3][0]  
@@ -166,6 +180,11 @@ def swipe_place(liste, n1, x_prime, y_prime):
 
 
 def deplace_1_passager(liste, n):  # [[x, y], bagage, couleur, [x', y']]
+    """Prend en entrée la liste des passagers actuellement dans l'avion ainsi
+    et l'indice auquel correspond le passager dans cette liste (l'indice est noté n)
+    
+    Puis déplace ou non le passager en fonction d'où il se trouve dans l'avion.
+    Permet aussi de faire déposer les bagages de passagers."""
     global compteur_passager_assis
 
     if liste[n][0] == liste[n][3]:  # si passager à sa place
