@@ -57,15 +57,13 @@ def passagers(mat):
 
     x = choice([i for i in range(1, 8) if i not in interdit_x])
     y = choice([i for i in range(1, 31) if i not in interdit_y])
-    mat.append([[x, y]])
 
-    if mat[-1] in mat_2:
-        while mat[-1] in mat_2:
-            del mat[-1]
+    if [x, y] in mat_2:
+        while [x, y] in mat_2:
             x = choice([i for i in range(1, 8) if i not in interdit_x])
             y = choice([i for i in range(1, 31) if i not in interdit_y])
-            mat.append([[x, y]])
-    mat_2.append([[x, y]])
+    mat_2.append([x, y])
+    mat.append([[x, y]])
 
     interdit(x, y)
 
