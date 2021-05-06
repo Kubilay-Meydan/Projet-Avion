@@ -12,7 +12,6 @@
 import tkinter as tk
 import random as rd
 from random import choice
-import copy
 
 
 racine = tk.Tk()
@@ -38,9 +37,9 @@ NB_COLONNE = 7
 #########################################
 # VARIABLES
 
-mat_passagers = [] # Liste de tous les passages
+mat_passagers = []  # Liste de tous les passages
 mat_2 = []
-liste_passager_in=[] # Liste des passagers actuellement dans l'avion.
+liste_passager_in = []  # Liste des passagers actuellement dans l'avion.
 interdit_x = [4]
 interdit_y = []
 count_x = []
@@ -60,12 +59,13 @@ def passagers(mat):
     y = choice([i for i in range(1, 31) if i not in interdit_y])
     mat.append([[x, y]])
 
-    while mat[-1] in mat_2:
-        del mat[-1]
-        x = choice([i for i in range(1, 8) if i not in interdit_x])
-        y = choice([i for i in range(1, 31) if i not in interdit_y])
-        mat.append([x, y])
-    mat_2 = mat.copy()
+    if mat[-1] in mat_2:
+        while mat[-1] in mat_2:
+            del mat[-1]
+            x = choice([i for i in range(1, 8) if i not in interdit_x])
+            y = choice([i for i in range(1, 31) if i not in interdit_y])
+            mat.append([[x, y]])
+    mat_2.append([[x, y]])
 
     interdit(x, y)
 
@@ -117,16 +117,14 @@ def entree_passager(liste):
     Test si un nouveau passager peut entrer dans l'avion.
     Si oui il rentre et on ajoute ses coordonnées actuelles à la liste la
     représentant. Sinon rien ne se passe."""
-    
-    global compteur_passager, liste_passager_in
 
+    global compteur_passager, liste_passager_in
 
     if (avion.itemcget((convertit_siege_identifiant(4, 1)), "fill")) == COULEUR_SIEGE_VIDE:
         compteur_passager += 1 # Prend le passager suivant dans la liste de tous les passagers
         avion.itemconfigure(convertit_siege_identifiant(4, 1), fill=liste[compteur_passager][2])
         liste_passager_in.append(liste[compteur_passager])
         liste_passager_in[compteur_passager].extend([4, 1])
-
 
 
 def demarrer():
@@ -210,6 +208,5 @@ avion.bind(quadrillage())
 for i in range(180):
     passagers(mat_passagers)
 
-# print(mat_passagers)
 
 racine.mainloop()
