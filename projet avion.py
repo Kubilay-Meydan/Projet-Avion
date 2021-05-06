@@ -29,24 +29,27 @@ COULEUR_PASSAGER_0_BAGAGE = 'cyan'
 COULEUR_PASSAGER_1_BAGAGE = 'mediumorchid1'
 COULEUR_PASSAGER_2_BAGAGES = 'red'
 COULEUR_SIEGE_VIDE = 'blue'
-COULEUR_SIEGE_OCCUPE = 'green'
-COULEUR_SIEGE_REMPLI = 'yellow'
+COULEUR_SIEGE_OCCUPE = 'yellow'
+COULEUR_SIEGE_REMPLI = 'green'
 NB_RANG = 30
 NB_COLONNE = 7
-
+NB_PASSAGERS_MAX = 180
+X_COULOIR = 4 
 
 #########################################
 # VARIABLES
 
 mat_passagers = [] # Liste de tous les passages
 mat_2 = []
-liste_passager_in=[] # Liste des passagers actuellement dans l'avion.
+liste_passagers_in=[] # Liste des passagers actuellement dans l'avion.
+l_passagers_in_bis = []
 interdit_x = [4]
 interdit_y = []
 count_x = []
 count_y = []
 compteur_passager = -1
-
+tps_etape = 50  # temps entre chaque étape
+compteur_passager_assis = 0
 
 #########################################
 # FONCTIONS
@@ -112,20 +115,99 @@ def convertit_siege_identifiant(x, y):  # colonne, rang
                 return identifiant
 
 
-def entree_passager(liste):
+def entree_passager():
     """ Prend en argument la liste d'un passager qui n'est pas dans l'avion.
     Test si un nouveau passager peut entrer dans l'avion.
     Si oui il rentre et on ajoute ses coordonnées actuelles à la liste la
     représentant. Sinon rien ne se passe."""
-    
-    global compteur_passager, liste_passager_in
 
+    global compteur_passager, liste_passagers_in, mat_passagers
 
     if (avion.itemcget((convertit_siege_identifiant(4, 1)), "fill")) == COULEUR_SIEGE_VIDE:
-        compteur_passager += 1 # Prend le passager suivant dans la liste de tous les passagers
-        avion.itemconfigure(convertit_siege_identifiant(4, 1), fill=liste[compteur_passager][2])
-        liste_passager_in.append(liste[compteur_passager])
-        liste_passager_in[compteur_passager].extend([4, 1])
+        compteur_passager += 1  # Prend le passager suivant dans la liste de tous les passagers
+        if compteur_passager < NB_PASSAGERS_MAX:  # Si tous les passagers ne sont pas encore dans l'avion
+            avion.itemconfigure(convertit_siege_identifiant(4, 1), fill=mat_passagers[compteur_passager][2])
+            liste_passagers_in.append(mat_passagers[compteur_passager])
+            liste_passagers_in[compteur_passager].extend([[4, 1]])
+
+
+def deplace_passagers_in():
+    "Déplace tous les passages qui sont dans l'avion pour une étape, et on fait rentrer si possible."
+    global liste_passagers_in
+
+    if liste_passagers_in != []:
+        for i in range(len(liste_passagers_in)):
+            deplace_1_passager(liste_passagers_in, i)
+
+        entree_passager()
+
+    avion.after(tps_etape, lambda: deplace_passagers_in())
+
+
+def convertisseur_couleur_case(x, y, couleur):
+    avion.itemconfig((convertit_siege_identifiant(x, y)), fill=couleur)
+
+
+def swipe_place(liste, n1, x_prime, y_prime):
+
+    # print("liste après", liste, "\n")
+    if [[x_prime, y_prime], 0, COULEUR_SIEGE_REMPLI, [x_prime, y_prime]] in liste:
+        n2 = liste.index([[x_prime, y_prime], 0, COULEUR_SIEGE_REMPLI, [x_prime, y_prime]])
+        # print(n1, n2)
+        # print((liste[n1]), liste[n2])
+        liste[n2][3][0], liste[n1][3][0] = liste[n1][3][0], liste[n2][3][0]  
+        liste[n2][2] = COULEUR_PASSAGER_0_BAGAGE
+        convertisseur_couleur_case(liste[n2][3][0], liste[n2][3][1], liste[n2][2])
+        convertisseur_couleur_case(liste[n1][3][0], liste[n1][3][1], liste[n1][2])
+    # liste.extend([liste[n2]])
+    # del liste[n2]
+
+    return liste
+
+
+def deplace_1_passager(liste, n):  # [[x, y], bagage, couleur, [x', y']]
+    global compteur_passager_assis
+
+    if liste[n][0] == liste[n][3]:  # si passager à sa place
+        pass
+    elif (liste[n][0][1]) != (liste[n][3][1]):  # si passager pas dans sa rangée.
+        liste[n][3][1] += 1  # Va dans la rangée suivante.
+        if (avion.itemcget((convertit_siege_identifiant(liste[n][3][0], liste[n][3][1])), "fill")) != COULEUR_SIEGE_VIDE:  #S i case suivante occupé
+            liste[n][3][1] -= 1
+        else:
+            convertisseur_couleur_case(liste[n][3][0], (liste[n][3][1]-1), COULEUR_SIEGE_VIDE)
+            convertisseur_couleur_case(liste[n][3][0], liste[n][3][1], liste[n][2])
+
+    elif (liste[n][0][1]) == (liste[n][3][1]):  # Si dans sa rangée
+        if liste[n][1] == 0:  # si pas de bagages
+            if liste[n][0][0] < X_COULOIR:  # Va dans le rang de gauche (par rapport à l'interface graphique)
+                if (avion.itemcget((convertit_siege_identifiant(liste[n][3][0]-1, liste[n][3][1])), "fill")) == COULEUR_SIEGE_VIDE:  # Si pas de passager qui gene.
+                    convertisseur_couleur_case(liste[n][3][0], liste[n][3][1], COULEUR_SIEGE_VIDE)  # La case redevient vide
+                    liste[n][3][0] -= 1 
+                elif (avion.itemcget((convertit_siege_identifiant(liste[n][3][0]-1, liste[n][3][1])), "fill")) == COULEUR_SIEGE_REMPLI:  # Si passager assis gène le passage.
+                    # print("liste avant", liste, "\n")
+                    swipe_place(liste, n, liste[n][3][0] - 1, liste[n][3][1])
+
+            else:  # Va dans le rang de droite (par rapport à l'interface graphique)
+                if (avion.itemcget((convertit_siege_identifiant(liste[n][3][0]+1, liste[n][3][1])), "fill")) == COULEUR_SIEGE_VIDE:  # Si pas de passager qui gene.
+                    convertisseur_couleur_case(liste[n][3][0], liste[n][3][1], COULEUR_SIEGE_VIDE)  # La case redevient vide
+                    liste[n][3][0] += 1
+                elif (avion.itemcget((convertit_siege_identifiant(liste[n][3][0]-1, liste[n][3][1])), "fill")) == COULEUR_SIEGE_REMPLI:  # Si passager assis gène le passage.
+                    # print("liste avant", liste, "\n")
+                    swipe_place(liste, n, liste[n][3][0] + 1, liste[n][3][1])
+
+            if liste[n][0] == liste[n][3]:  # si passager à atteint son siège.
+                liste[n][2] = COULEUR_SIEGE_REMPLI
+                compteur_passager_assis += 1
+            convertisseur_couleur_case(liste[n][3][0], liste[n][3][1], liste[n][2])  # La case suivante prend la couleur du passager
+
+        else:  # si a des bagages
+            liste[n][1] -= 1
+            if liste[n][1] == 0:
+                liste[n][2] = COULEUR_PASSAGER_0_BAGAGE
+            elif liste[n][1] == 1:
+                liste[n][2] = COULEUR_PASSAGER_1_BAGAGE
+            convertisseur_couleur_case(liste[n][3][0], liste[n][3][1], liste[n][2])
 
 
 
@@ -210,6 +292,10 @@ avion.bind(quadrillage())
 for i in range(180):
     passagers(mat_passagers)
 
-# print(mat_passagers)
+#print(mat_passagers, "\n")
+
+entree_passager()
+
+deplace_passagers_in()
 
 racine.mainloop()
