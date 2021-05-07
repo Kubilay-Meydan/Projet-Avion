@@ -24,13 +24,13 @@ racine.title("simulation d'avion")
 CANVAS_HEIGHT = 600
 CANVAS_WIDTH = 140
 COTE = 20
-COULEUR_COULOIR = 'grey'
+# COULEUR_COULOIR = 'grey'
 COULEUR_PASSAGER_0_BAGAGE = 'cyan'
 COULEUR_PASSAGER_1_BAGAGE = 'mediumorchid1'
 COULEUR_PASSAGER_2_BAGAGES = 'red'
-COULEUR_SIEGE_VIDE = 'blue'
+COULEUR_SIEGE_VIDE = 'grey'
 COULEUR_SIEGE_OCCUPE = 'yellow'
-COULEUR_SIEGE_REMPLI = 'green'
+COULEUR_SIEGE_REMPLI = 'lawn green'
 NB_RANG = 30
 NB_COLONNE = 7
 NB_PASSAGERS_MAX = 180
@@ -42,8 +42,7 @@ TPS_ETAPES = 50  # temps entre chaque étape
 
 mat_passagers = [] # Liste de tous les passages
 mat_2 = []
-liste_passagers_in=[] # Liste des passagers actuellement dans l'avion.
-l_passagers_in_bis = []
+liste_passagers_in = [] # Liste des passagers actuellement dans l'avion.
 interdit_x = [4]
 interdit_y = []
 count_x = []
@@ -262,7 +261,7 @@ def quadrillage():
     j = 0
     while j <= CANVAS_HEIGHT:
         while i < CANVAS_WIDTH:
-            avion.create_rectangle(i, j, i+COTE, j+COTE, fill="blue")
+            avion.create_rectangle(i, j, i+COTE, j+COTE, fill=COULEUR_SIEGE_VIDE)
             i += COTE
         j += COTE
         i = 0
