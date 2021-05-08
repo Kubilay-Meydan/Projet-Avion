@@ -326,19 +326,14 @@ for i in range(180):
 
 entree_passager()
 
-"""
-BONUS
 
+#bonus
 def changespeed(speed):
     global TPS_ETAPES
     TPS_ETAPES = w1.get()
-    
-
-w1 = tk.Scale(racine, from_=0, to=1000, orient ="horizontal", label = 'Temps (ms)', command = changespeed)
-w1.set(500)
-w1.grid(row=7, column=0)
-
-"""
+w1 = tk.Scale(racine, from_=0, to=200, orient ="horizontal", label = 'Temps entre les étapes (ms)', command = changespeed, length=150)
+w1.set(50)
+w1.grid(row=7, column=1, rowspan = 2)
 
 
 racine.mainloop()
