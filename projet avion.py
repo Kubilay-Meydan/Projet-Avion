@@ -20,7 +20,6 @@ racine.title("simulation d'avion")
 
 #########################################
 # CONSTANTES
-
 CANVAS_HEIGHT = 600
 CANVAS_WIDTH = 140
 COTE = 20
@@ -221,39 +220,60 @@ def deplace_1_passager(liste, n):  # [[x, y], bagage, couleur, [x', y']]
             convertisseur_couleur_case(liste[n][3][0], liste[n][3][1], liste[n][2])
 
 
+#fonctions des boutons
 
 def demarrer():
     # fonction démarrant la simulation
-    pass
+    global TPS_ETAPES
+    TPS_ETAPES = 50
+    deplace_passagers_in()
+    
 
 
 def arreter():
     # fonction arrêtant la simulation
-    pass
+    racine.destroy()
+
+    
 
 
 def pause():
     # fonction mettant la simulation en pause
-    pass
+    global TPS_ETAPES
+    TPS_ETAPES = 3000000
+    
 
 
 def relancer():
     # fonction relançant la simulation après l'avoir mis en pause
-    pass
+    global TPS_ETAPES
+    TPS_ETAPES = 50
+    deplace_passagers_in()
+
+    
+    
 
 
 def etape_1():
     # fonction permettant d'avancer la simulation d'une étape
-    pass
+    global TPS_ETAPES
+    TPS_ETAPES = 300000
+    deplace_passagers_in()
+   
+    
 
 
 def etape_par_etape():
     # fonction permmettant de
-    pass
+    global TPS_ETAPES
+    TPS_ETAPES = 500
+    deplace_passagers_in()
+    
 
 
 def recommencer():
     # fonction permettant de recommencer la simulation du début
+    
     pass
 
 
@@ -306,6 +326,19 @@ for i in range(180):
 
 entree_passager()
 
-deplace_passagers_in()
+"""
+BONUS
+
+def changespeed(speed):
+    global TPS_ETAPES
+    TPS_ETAPES = w1.get()
+    
+
+w1 = tk.Scale(racine, from_=0, to=1000, orient ="horizontal", label = 'Temps (ms)', command = changespeed)
+w1.set(500)
+w1.grid(row=7, column=0)
+
+"""
+
 
 racine.mainloop()
