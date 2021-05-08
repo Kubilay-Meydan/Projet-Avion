@@ -20,6 +20,7 @@ racine.title("simulation d'avion")
 
 #########################################
 # CONSTANTES
+
 CANVAS_HEIGHT = 600
 CANVAS_WIDTH = 140
 COTE = 20
