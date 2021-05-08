@@ -335,5 +335,4 @@ w1 = tk.Scale(racine, from_=0, to=200, orient ="horizontal", label = 'Temps entr
 w1.set(50)
 w1.grid(row=7, column=1, rowspan = 2)
 
-
 racine.mainloop()
