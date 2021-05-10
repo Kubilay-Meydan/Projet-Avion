@@ -326,7 +326,6 @@ for i in range(180):
 
 entree_passager()
 
-
 #bonus
 def changespeed(speed):
     global TPS_ETAPES
