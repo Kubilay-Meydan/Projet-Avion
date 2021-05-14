@@ -270,11 +270,31 @@ def etape_par_etape():
     deplace_passagers_in()
     
 
-
 def recommencer():
-    # fonction permettant de recommencer la simulation du début
-    
-    pass
+    """Permet de recommencer la simulation du début.
+    Remet les variable à "zéro", crée une nouvelle liste de passagers."""
+    global mat_passagers, mat_2, liste_passagers_in, interdit_x, interdit_y,\
+        count_x, count_y, compteur_passager, compteur_passager_assis
+
+    # Remet tous les variables à "zéro"
+    mat_passagers = []  # Liste de tous les passages
+    mat_2 = []
+    liste_passagers_in = []  # Liste des passagers actuellement dans l'avion.
+    interdit_x = [4]
+    interdit_y = []
+    count_x = []
+    count_y = []
+    compteur_passager = -1
+    compteur_passager_assis = 0
+
+    # Remet la couleur des sièges à "zéro".
+    for j in range((NB_COLONNE*NB_RANG)):
+        avion.itemconfig(j, fill=COULEUR_SIEGE_VIDE)
+
+    # Crée nouvelle liste de passagers.
+    for i in range(180):
+        passagers(mat_passagers)
+    entree_passager()
 
 
 def quadrillage():
