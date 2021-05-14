@@ -121,9 +121,11 @@ def entree_passager():
     représentant. Sinon rien ne se passe."""
 
     global compteur_passager, liste_passagers_in, mat_passagers
+
     if (avion.itemcget((convertit_siege_identifiant(4, 1)), "fill")) == COULEUR_SIEGE_VIDE:
-        compteur_passager += 1  # Prend le passager suivant dans la liste de tous les passagers
-        if compteur_passager < NB_PASSAGERS_MAX:  # Si tous les passagers ne sont pas encore dans l'avion
+        compteur_passager += 1  # Prend le passager suivant dans la liste de tous les passagers.
+        if compteur_passager < NB_PASSAGERS_MAX:
+            # Si tous les passagers ne sont pas encore dans l'avion
             avion.itemconfigure(convertit_siege_identifiant(4, 1), fill=mat_passagers[compteur_passager][2])
             liste_passagers_in.append(mat_passagers[compteur_passager])
             liste_passagers_in[compteur_passager].extend([[4, 1]])
