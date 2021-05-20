@@ -324,7 +324,7 @@ def recommencer():
     compteur_passager_assis = 0
 
     # Remet la couleur des sièges à "zéro".
-    for j in range((NB_COLONNE*NB_RANG)):
+    for j in range((NB_COLONNE*NB_RANG+1)):
         avion.itemconfig(j, fill=COULEUR_SIEGE_VIDE)
 
     # Crée nouvelle liste de passagers.
