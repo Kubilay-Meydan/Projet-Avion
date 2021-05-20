@@ -22,6 +22,7 @@ racine.title("simulation d'avion")
 
 CANVAS_HEIGHT = 600
 CANVAS_WIDTH = 140
+BORD_WIDHT = 350
 COTE = 20
 COULEUR_PASSAGER_0_BAGAGE = 'orchid1'
 COULEUR_PASSAGER_1_BAGAGE = 'DarkOrchid2'
@@ -356,7 +357,7 @@ def quadrillage():
 
 
 avion = tk.Canvas(racine, height=CANVAS_HEIGHT, width=CANVAS_WIDTH)
-bord = tk.Canvas(racine, height=30, width=350, bg=COULEUR_SIEGE_VIDE)
+bord = tk.Canvas(racine, height=30, width=BORD_WIDHT, bg=COULEUR_SIEGE_VIDE)
 bouton_demarrer = tk.Button(racine, text='Démarrer', command=demarrer,
                             relief="flat", bg=COULEUR_SIEGE_VIDE)
 bouton_arreter = tk.Button(racine, text='Arrêt', command=arreter,
