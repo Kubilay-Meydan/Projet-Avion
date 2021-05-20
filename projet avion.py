@@ -302,7 +302,7 @@ def recommencer():
 def quadrillage():
     i = 0
     j = 0
-    while j <= CANVAS_HEIGHT:
+    while j < CANVAS_HEIGHT:
         while i < CANVAS_WIDTH:
             avion.create_rectangle(i, j, i+COTE, j+COTE, fill=COULEUR_SIEGE_VIDE)
             i += COTE
