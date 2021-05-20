@@ -10,6 +10,7 @@
 
 
 import tkinter as tk
+import tkinter.messagebox as msg
 import random as rd
 from random import choice
 
@@ -352,6 +353,14 @@ def quadrillage():
         i = 0
 
 
+def aide():
+    msg.showinfo(title="Aide", message="Bienvenue dans la fenetre d'aide." +
+                 2*"\n" + "Gris = Siège vide." + "\n"
+                 + "Vert = Passager correctement assis." + "\n"
+                 + "Rose = Passager sans bagage." + "\n"
+                 + "Violet clair = Passager avec bagage." + "\n"
+                 + "Violet foncé = Passager avec 2 bagages.")
+
 #########################################
 # WIDGETS
 
@@ -359,16 +368,18 @@ def quadrillage():
 avion = tk.Canvas(racine, height=CANVAS_HEIGHT, width=CANVAS_WIDTH)
 bord = tk.Canvas(racine, height=30, width=BORD_WIDHT, bg=COULEUR_SIEGE_VIDE)
 bouton_demarrer = tk.Button(racine, text='Démarrer', command=demarrer,
-                            relief="flat", bg=COULEUR_SIEGE_VIDE)
+                            relief="flat", bg=COULEUR_SIEGE_VIDE, fg="white")
 bouton_arreter = tk.Button(racine, text='Arrêt', command=arreter,
-                           relief="flat", bg=COULEUR_SIEGE_VIDE)
+                           relief="flat", bg=COULEUR_SIEGE_VIDE, fg="white")
 bouton_pause = tk.Button(racine, text='Pause', command=pause)
 bouton_relancer = tk.Button(racine, text='Relancer', command=relancer)
 bouton_etape_1 = tk.Button(racine, text='Etape +1', command=etape_1)
 bouton_etape_par_etape = tk.Button(racine, text='Etape par étape',
                                    command=etape_par_etape)
 bouton_recommencer = tk.Button(racine, text='Recommencer', command=recommencer,
-                               relief="flat", bg=COULEUR_SIEGE_VIDE)
+                               relief="flat", bg=COULEUR_SIEGE_VIDE,
+                               fg="white")
+bouton_aide = tk.Button(racine, bitmap="info", command=aide)
 # nombre_etapes = tk.Label(racine, command=resultat)
 
 #########################################
@@ -384,6 +395,7 @@ bouton_relancer.grid(row=3, column=1)
 bouton_etape_1.grid(row=5, column=0)
 bouton_etape_par_etape.grid(row=5, column=1)
 bouton_recommencer.grid(row=0, column=1)
+bouton_aide.grid(row=0, column=6)
 # nombre_etapes.grid(row=0, column=2)
 
 
@@ -412,3 +424,4 @@ w1.set(50)
 w1.grid(row=7, column=0, columnspan=2)
 
 racine.mainloop()
+
