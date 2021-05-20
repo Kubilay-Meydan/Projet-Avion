@@ -337,7 +337,7 @@ def resultat():
     pass
 
 
-print(resultat)
+# print(resultat)
 
 
 def quadrillage():
@@ -398,9 +398,8 @@ for i in range(180):
 entree_passager()
 
 
-# Bonus
-
-
+#########################################
+# BONUS
 def changespeed(speed):
     global TPS_ETAPES
     TPS_ETAPES = w1.get()
