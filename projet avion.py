@@ -356,27 +356,32 @@ def quadrillage():
 
 
 avion = tk.Canvas(racine, height=CANVAS_HEIGHT, width=CANVAS_WIDTH)
-bouton_demarrer = tk.Button(racine, text='Démarrer', command=demarrer)
-bouton_arreter = tk.Button(racine, text='Arrêter', command=arreter)
+bord = tk.Canvas(racine, height=30, width=350, bg=COULEUR_SIEGE_VIDE)
+bouton_demarrer = tk.Button(racine, text='Démarrer', command=demarrer,
+                            relief="flat", bg=COULEUR_SIEGE_VIDE)
+bouton_arreter = tk.Button(racine, text='Arrêt', command=arreter,
+                           relief="flat", bg=COULEUR_SIEGE_VIDE)
 bouton_pause = tk.Button(racine, text='Pause', command=pause)
 bouton_relancer = tk.Button(racine, text='Relancer', command=relancer)
-bouton_etape_1 = tk.Button(racine, text='Etape suivante', command=etape_1)
+bouton_etape_1 = tk.Button(racine, text='Etape +1', command=etape_1)
 bouton_etape_par_etape = tk.Button(racine, text='Etape par étape',
                                    command=etape_par_etape)
-bouton_recommencer = tk.Button(racine, text='Recommencer', command=recommencer)
+bouton_recommencer = tk.Button(racine, text='Recommencer', command=recommencer,
+                               relief="flat", bg=COULEUR_SIEGE_VIDE)
 # nombre_etapes = tk.Label(racine, command=resultat)
 
 #########################################
 # POSITIONNEMENT
 
 
-avion.grid(row=1, rowspan=12, column=3, columnspan=4)
+bord.grid(row=0, column=0, columnspan=15)
+avion.grid(row=2, rowspan=12, column=3, columnspan=4)
 bouton_demarrer.grid(row=0, column=0)
-bouton_arreter.grid(row=0, column=4)
-bouton_pause.grid(row=2, column=0)
-bouton_relancer.grid(row=2, column=1)
-bouton_etape_1.grid(row=4, column=0)
-bouton_etape_par_etape.grid(row=4, column=1)
+bouton_arreter.grid(row=0, column=3)
+bouton_pause.grid(row=3, column=0)
+bouton_relancer.grid(row=3, column=1)
+bouton_etape_1.grid(row=5, column=0)
+bouton_etape_par_etape.grid(row=5, column=1)
 bouton_recommencer.grid(row=0, column=1)
 # nombre_etapes.grid(row=0, column=2)
 
