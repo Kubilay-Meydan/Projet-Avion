@@ -332,6 +332,13 @@ def recommencer():
     entree_passager()
 
 
+def resultat():
+    pass
+
+
+print(resultat)
+
+
 def quadrillage():
     i = 0
     j = 0
@@ -357,7 +364,7 @@ bouton_etape_1 = tk.Button(racine, text='Etape suivante', command=etape_1)
 bouton_etape_par_etape = tk.Button(racine, text='Etape par étape',
                                    command=etape_par_etape)
 bouton_recommencer = tk.Button(racine, text='Recommencer', command=recommencer)
-
+# nombre_etapes = tk.Label(racine, command=resultat)
 
 #########################################
 # POSITIONNEMENT
@@ -371,6 +378,7 @@ bouton_relancer.grid(row=2, column=1)
 bouton_etape_1.grid(row=4, column=0)
 bouton_etape_par_etape.grid(row=4, column=1)
 bouton_recommencer.grid(row=0, column=1)
+# nombre_etapes.grid(row=0, column=2)
 
 
 avion.bind(quadrillage())
