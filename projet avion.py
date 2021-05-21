@@ -347,8 +347,8 @@ def recommencer():
 
 def aide():
     """Affiche la fenetre d'aide et son message."""
-    msg.showinfo(title="Aide", message="Bienvenue dans la fenetre d'aide." +
-                 2*"\n" + "Gris = Siège vide." + "\n"
+    msg.showinfo(title="Information", message="Bienvenue dans la fenêtre \
+d'information." + 2*"\n" + "Gris = Siège vide." + "\n"
                  + "Vert = Passager correctement assis." + "\n"
                  + "Rose = Passager sans bagage." + "\n"
                  + "Violet clair = Passager avec bagage." + "\n"
