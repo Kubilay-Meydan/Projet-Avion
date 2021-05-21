@@ -5,10 +5,14 @@ Nous sommes heureux de vous présenter, en temps que groupe, notre simulation d'
 Tout d'abord, voici les personnes ayant contribué au projet ainsi que nos tâches respectives:
 
 -Julie CIESLA 22003761: Les fonctions déplacement des passagers (de convertit_siege_identifiant à déplace_1_passager) 
+
 -Kubilay MEYDAN 22004090: Responsable Git, fonctionnement des boutons de commande, ecriture du README 
  (PS, j’ai fait mes commits de 2 ordinateurs donc soit “Kubilay Meydan”, soit “uvsq22004090”) 
+ 
 -Elise REBER 21929616: Gestion de l’interface graphique 
+
 -Alix FRAGNER 22006323: Génération de la liste des passagers avec leurs destinations 
+
 -Margaux DUBOIS 21803447: Responsable flake8, contribution aux fonctions 'Swipe' et 'déplace_1_passager' 
 
 Code couleur:
