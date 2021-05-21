@@ -294,7 +294,8 @@ def arreter():
 
 def pause():
     # fonction mettant la simulation en pause
-    """Definit un temps d'étapes tellement grand que la fonction est en virtuellement en pause"""
+    """Definit un temps d'étapes tellement grand que
+    la fonction est en virtuellement en pause"""
     global TPS_ETAPES
     TPS_ETAPES = 3000000
 
@@ -317,7 +318,8 @@ def etape_1():
 
 def etape_par_etape():
     # fonction permmettant de
-    """Met un temps entre étapes qui fait que les étapes passent assez une par une de manière distincte""" 
+    """Met un temps entre étapes qui fait que les étapes passent
+    assez une par une de manière distincte"""
     global TPS_ETAPES
     TPS_ETAPES = 500
     deplace_passagers_in()
