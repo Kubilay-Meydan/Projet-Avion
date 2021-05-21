@@ -16,7 +16,7 @@ from random import choice
 
 
 racine = tk.Tk()
-racine.title("simulation d'avion")
+racine.title("Simulation d'avion")
 
 #########################################
 # CONSTANTES
@@ -41,7 +41,7 @@ TPS_ETAPES = 50  # temps entre chaque étape
 #########################################
 # VARIABLES
 
-mat_passagers = []  # Liste de tous les passages
+mat_passagers = []  # Liste de tous les passages.
 mat_2 = []
 liste_passagers_in = []  # Liste des passagers actuellement dans l'avion.
 interdit_x = [4]
@@ -59,7 +59,7 @@ demarre = 1
 
 
 def passagers(mat):
-    '''Créer un passager [[destination], bagage, couleur] dans une matrice'''
+    '''Créer un passager [[destination], bagage, couleur] dans une matrice.'''
 
     global mat_2, interdit_x, interdit_y
 
@@ -89,7 +89,7 @@ def passagers(mat):
 def interdit(x, y):
     '''Compte combien de fois x, y sont apparus.
     Si x est apparu 30 fois ou y est apparu 7 fois, il est enlevé des
-    possibilités de choix pour les places'''
+    possibilités de choix pour les places.'''
 
     global interdit_x, interdit_y, count_x, count_y
 
@@ -108,7 +108,7 @@ def convertit_siege_identifiant(x, y):  # colonne, rang
     """Cette fonction prend en argument x et y qui sont les coordonnées d'où se
     trouve un passager (ou bien où il doit aller).
     Convertit ces coordonnées en identifiant de canvas.
-    Returne l'identifiant du canevas"""
+    Retourne l'identifiant du canevas"""
 
     global NB_COLONNE, NB_RANG
 
@@ -127,7 +127,7 @@ def premier_passager():
 
 def entree_passager():
     """ Prend en argument la liste d'un passager qui n'est pas dans l'avion.
-    Test si un nouveau passager peut entrer dans l'avion.
+    Teste si un nouveau passager peut entrer dans l'avion.
     Si oui il rentre et on ajoute ses coordonnées actuelles à la liste la
     représentant. Sinon rien ne se passe."""
 
@@ -234,7 +234,7 @@ def deplace_1_passager(liste, n):  # [[x, y], bagage, couleur, [x', y']]
     elif y_final == y_etape:  # Si dans sa rangée
         if liste[n][1] == 0:  # si pas de bagages
             if x_final < X_COULOIR:
-                # Siège du passager à gauche (dans le canvas)
+                # Siège du passager à gauche (par rapport au canvas)
                 if (avion.itemcget((convertit_siege_identifiant
                                     (x_etape-1, y_etape)), "fill"))\
                                         == COULEUR_SIEGE_VIDE:
@@ -247,7 +247,7 @@ def deplace_1_passager(liste, n):  # [[x, y], bagage, couleur, [x', y']]
                     swipe_place(liste, n, x_etape-1, y_etape)
 
             else:
-                # Siège du passager à droite (dans le canvas)
+                # Siège du passager à droite (par rapport au canvas)
                 if (avion.itemcget((convertit_siege_identifiant
                                     (x_etape+1, y_etape)), "fill"))\
                                         == COULEUR_SIEGE_VIDE:
@@ -345,6 +345,19 @@ def recommencer():
     entree_passager()
 
 
+def aide():
+    """Affiche la fenetre d'aide et son message."""
+    msg.showinfo(title="Aide", message="Bienvenue dans la fenetre d'aide." +
+                 2*"\n" + "Gris = Siège vide." + "\n"
+                 + "Vert = Passager correctement assis." + "\n"
+                 + "Rose = Passager sans bagage." + "\n"
+                 + "Violet clair = Passager avec bagage." + "\n"
+                 + "Violet foncé = Passager avec 2 bagages.")
+
+
+# Autres fonctions
+
+
 def resultat():
     pass
 
@@ -362,16 +375,6 @@ def quadrillage():
             i += COTE
         j += COTE
         i = 0
-
-
-def aide():
-    """Affiche la fenetre d'aide et son message."""
-    msg.showinfo(title="Aide", message="Bienvenue dans la fenetre d'aide." +
-                 2*"\n" + "Gris = Siège vide." + "\n"
-                 + "Vert = Passager correctement assis." + "\n"
-                 + "Rose = Passager sans bagage." + "\n"
-                 + "Violet clair = Passager avec bagage." + "\n"
-                 + "Violet foncé = Passager avec 2 bagages.")
 
 
 #########################################
