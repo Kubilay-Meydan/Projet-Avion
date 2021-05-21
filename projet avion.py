@@ -30,6 +30,7 @@ COULEUR_PASSAGER_1_BAGAGE = 'DarkOrchid2'
 COULEUR_PASSAGER_2_BAGAGES = 'purple4'
 COULEUR_SIEGE_VIDE = 'grey'
 COULEUR_SIEGE_REMPLI = 'lawn green'
+COULEUR_BOUTON_BORD = 'white'
 NB_RANG = 30
 NB_COLONNE = 7
 NB_PASSAGERS_MAX = 180
@@ -49,11 +50,12 @@ count_x = []
 count_y = []
 compteur_passager = -1
 compteur_passager_assis = 0
+demarre = 1
 
 #########################################
 # FONCTIONS
 
-# Fonctions pour le déplacement des passagers
+# Fonctions pour création de la liste des passagers
 
 
 def passagers(mat):
@@ -100,6 +102,8 @@ def interdit(x, y):
         interdit_y.append(y)
 
 
+# Fonctions pour le déplacement des passagers
+
 def convertit_siege_identifiant(x, y):  # colonne, rang
     """Cette fonction prend en argument x et y qui sont les coordonnées d'où se
     trouve un passager (ou bien où il doit aller).
@@ -114,6 +118,11 @@ def convertit_siege_identifiant(x, y):  # colonne, rang
             identifiant += 1
             if x == j and y == i:
                 return identifiant
+
+
+def premier_passager():
+    """Fait entrer le premier passager dans l'avion."""
+    entree_passager()
 
 
 def entree_passager():
@@ -272,6 +281,7 @@ def demarrer():
     # fonction démarrant la simulation
     global TPS_ETAPES
     TPS_ETAPES = 50
+    premier_passager()
     deplace_passagers_in()
 
 
@@ -311,7 +321,7 @@ def recommencer():
     """Permet de recommencer la simulation du début.
     Remet les variable à "zéro", crée une nouvelle liste de passagers."""
     global mat_passagers, mat_2, liste_passagers_in, interdit_x, interdit_y,\
-        count_x, count_y, compteur_passager, compteur_passager_assis
+        count_x, count_y, compteur_passager, compteur_passager_assis, demarre
 
     # Remet tous les variables à "zéro"
     mat_passagers = []  # Liste de tous les passages
@@ -323,6 +333,7 @@ def recommencer():
     count_y = []
     compteur_passager = -1
     compteur_passager_assis = 0
+    demarre = 1
 
     # Remet la couleur des sièges à "zéro".
     for j in range((NB_COLONNE*NB_RANG+1)):
@@ -354,12 +365,14 @@ def quadrillage():
 
 
 def aide():
+    """Affiche la fenetre d'aide et son message."""
     msg.showinfo(title="Aide", message="Bienvenue dans la fenetre d'aide." +
                  2*"\n" + "Gris = Siège vide." + "\n"
                  + "Vert = Passager correctement assis." + "\n"
                  + "Rose = Passager sans bagage." + "\n"
                  + "Violet clair = Passager avec bagage." + "\n"
                  + "Violet foncé = Passager avec 2 bagages.")
+
 
 #########################################
 # WIDGETS
@@ -368,9 +381,11 @@ def aide():
 avion = tk.Canvas(racine, height=CANVAS_HEIGHT, width=CANVAS_WIDTH)
 bord = tk.Canvas(racine, height=30, width=BORD_WIDHT, bg=COULEUR_SIEGE_VIDE)
 bouton_demarrer = tk.Button(racine, text='Démarrer', command=demarrer,
-                            relief="flat", bg=COULEUR_SIEGE_VIDE, fg="white")
+                            relief="flat", bg=COULEUR_SIEGE_VIDE,
+                            fg=COULEUR_BOUTON_BORD)
 bouton_arreter = tk.Button(racine, text='Arrêt', command=arreter,
-                           relief="flat", bg=COULEUR_SIEGE_VIDE, fg="white")
+                           relief="flat", bg=COULEUR_SIEGE_VIDE,
+                           fg=COULEUR_BOUTON_BORD)
 bouton_pause = tk.Button(racine, text='Pause', command=pause)
 bouton_relancer = tk.Button(racine, text='Relancer', command=relancer)
 bouton_etape_1 = tk.Button(racine, text='Etape +1', command=etape_1)
@@ -378,8 +393,9 @@ bouton_etape_par_etape = tk.Button(racine, text='Etape par étape',
                                    command=etape_par_etape)
 bouton_recommencer = tk.Button(racine, text='Recommencer', command=recommencer,
                                relief="flat", bg=COULEUR_SIEGE_VIDE,
-                               fg="white")
-bouton_aide = tk.Button(racine, bitmap="info", command=aide)
+                               fg=COULEUR_BOUTON_BORD)
+bouton_aide = tk.Button(racine, bitmap="info", command=aide,  relief="flat",
+                        bg=COULEUR_SIEGE_VIDE, fg=COULEUR_BOUTON_BORD)
 # nombre_etapes = tk.Label(racine, command=resultat)
 
 #########################################
@@ -406,12 +422,10 @@ avion.bind(quadrillage())
 for i in range(180):
     passagers(mat_passagers)
 
-
-entree_passager()
-
-
 #########################################
 # BONUS
+
+
 def changespeed(speed):
     global TPS_ETAPES
     TPS_ETAPES = w1.get()
@@ -424,4 +438,3 @@ w1.set(50)
 w1.grid(row=7, column=0, columnspan=2)
 
 racine.mainloop()
-
