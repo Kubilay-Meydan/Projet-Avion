@@ -13,7 +13,7 @@ Tout d'abord, voici les personnes ayant contribué au projet ainsi que nos tâch
 
 -Alix FRAGNER 22006323: Génération de la liste des passagers avec leur destination. 
 
--Margaux DUBOIS 21803447: Responsable flake8, contribution aux fonctions 'Swipe' et 'déplace_1_passager' et mise en place du compteur d'étapes.
+-Margaux DUBOIS 21803447: Responsable flake8, mise en place du compteur d'étapes et contribution aux fonctions 'Swipe' et 'déplace_1_passager'. (J'ai tenté de modifier les variables avec des indices de liste très longs, mais certaines variables faisaient bugger le code une fois ramplacées.)
 
 Code couleur:
 
