@@ -122,11 +122,6 @@ def convertit_siege_identifiant(x, y):  # colonne, rang
                 return identifiant
 
 
-def premier_passager():
-    """Fait entrer le premier passager dans l'avion."""
-    entree_passager()
-
-
 def entree_passager():
     """ Prend en argument la liste d'un passager qui n'est pas dans l'avion.
     Teste si un nouveau passager peut entrer dans l'avion.
@@ -158,8 +153,7 @@ def deplace_passagers_in():
 
     if compteur_passager_assis < 180:
         nb_etape += 1
-        print(nb_etape)
-    compteur_etape()
+        compteur_etape()
 
     if liste_passagers_in != []:
         for i in range(len(liste_passagers_in)):
@@ -186,6 +180,8 @@ def swipe_place(liste, n1, x_prime, y_prime):
     x_prime --> la coordonnée x où veut aller le passager n1
     y_prime --> la coordonnée y où veut aller le passager n1"""
 
+    global compteur_passager_assis
+
     # Le passager 2 est à sa place, il bloque le passage au passager 1.
     x_passager1 = liste[n1][3][0]
     y_passager1 = liste[n1][3][1]
@@ -206,6 +202,7 @@ def swipe_place(liste, n1, x_prime, y_prime):
         couleur2 = COULEUR_PASSAGER_0_BAGAGE
         convertisseur_couleur_case(x_passager2, y_passager2, couleur2)
         convertisseur_couleur_case(x_passager1, y_passager1, couleur1)
+        compteur_passager_assis -= 1
 
     return liste
 
@@ -291,7 +288,7 @@ def demarrer():
     """Definit le temps par défaut et exécute la simulation"""
     global TPS_ETAPES
     TPS_ETAPES = 50
-    premier_passager()
+    entree_passager()
     deplace_passagers_in()
 
 
@@ -377,18 +374,15 @@ d'information." + 2*"\n" + "Gris = Siège vide." + "\n"
 
 def resultat():
     pass
+# print(resultat)
 
 
 def compteur_etape():
-    global nb_etape, compteur_passager_assis
+    """Change le label: nombre_etape2 pour l'actualiser, ce label affiche le
+    nombre d'étapes."""
+    global nb_etape
 
-    pass
-
-    # while compteur_passager_assis < 180:
-        # avion.itemconfig(nombre_etape2, text='')
-
-
-# print(resultat)
+    nombre_etape2["text"] = nb_etape
 
 
 def quadrillage():
@@ -425,7 +419,7 @@ bouton_recommencer = tk.Button(racine, text='Recommencer', command=recommencer,
                                fg=COULEUR_BOUTON_BORD)
 bouton_aide = tk.Button(racine, bitmap="info", command=aide,  relief="flat",
                         bg=COULEUR_SIEGE_VIDE, fg=COULEUR_BOUTON_BORD)
-nombre_etape = tk.Label(racine, text="Nombre d'étapes")
+label_nombre_etape = tk.Label(racine, text="Nombre d'étapes")
 nombre_etape2 = tk.Label(racine, text='0')
 
 
@@ -443,7 +437,7 @@ bouton_etape_1.grid(row=5, column=0)
 bouton_etape_par_etape.grid(row=5, column=1)
 bouton_recommencer.grid(row=0, column=1)
 bouton_aide.grid(row=0, column=6)
-nombre_etape.grid(row=9, column=0)
+label_nombre_etape.grid(row=9, column=0)
 nombre_etape2.grid(row=9, column=1)
 
 
