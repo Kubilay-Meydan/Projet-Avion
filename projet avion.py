@@ -284,8 +284,8 @@ def deplace_1_passager(liste, n):  # [[x, y], bagage, couleur, [x', y']]
 # Fonctions utilisées par les boutons du canvas
 
 def demarrer():
-    # fonction démarrant la simulation
-    """Definit le temps par défaut et exécute la simulation"""
+    """Fonction démarrant la simulation.
+    Définit le temps par défaut et exécute la simulation"""
     global TPS_ETAPES
     TPS_ETAPES = 50
     entree_passager()
@@ -293,13 +293,12 @@ def demarrer():
 
 
 def arreter():
-    # fonction arrêtant la simulation
-    """Ferme la fenetre"""
+    """Fonction arrêtant la simulation.
+    Ferme la fenetre"""
     racine.destroy()
 
 
 def pause():
-    # fonction mettant la simulation en pause
     """Definit un temps d'étapes tellement grand que
     la fonction est en virtuellement en pause"""
     global TPS_ETAPES
@@ -307,23 +306,22 @@ def pause():
 
 
 def relancer():
-    # fonction relançant la simulation après l'avoir mis en pause\
-    """Remmet le temps entre les étapes à zéro"""
+    """Remet le temps entre les étapes à zéro.
+    Relance la simulation après l'avoir mis en pause """
     global TPS_ETAPES
     TPS_ETAPES = 50
     deplace_passagers_in()
 
 
 def etape_1():
-    # fonction permettant d'avancer la simulation d'une étape
-    """Met en pause la fonction après une étape"""
+    """Permet d'avancer la simulation d'une étape.
+    Met en pause la fonction après une étape"""
     global TPS_ETAPES
     TPS_ETAPES = 300000
     deplace_passagers_in()
 
 
 def etape_par_etape():
-    # fonction permmettant de
     """Met un temps entre étapes qui fait que les étapes passent
     assez une par une de manière distincte"""
     global TPS_ETAPES
