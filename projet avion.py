@@ -18,19 +18,24 @@ from random import choice
 racine = tk.Tk()
 racine.title("Simulation d'avion")
 
+
 #########################################
 # CONSTANTES
 
 CANVAS_HEIGHT = 600
 CANVAS_WIDTH = 140
-BORD_WIDHT = 350
+BORD_WIDHT = 420
 COTE = 20
+
 COULEUR_PASSAGER_0_BAGAGE = 'orchid1'
 COULEUR_PASSAGER_1_BAGAGE = 'DarkOrchid2'
 COULEUR_PASSAGER_2_BAGAGES = 'purple4'
 COULEUR_SIEGE_VIDE = 'grey'
 COULEUR_SIEGE_REMPLI = 'lawn green'
+COULEUR_BORD = 'royalblue2'
 COULEUR_BOUTON_BORD = 'white'
+COULEUR_I = 'yellow'
+
 NB_RANG = 30
 NB_COLONNE = 7
 NB_PASSAGERS_MAX = 180
@@ -48,6 +53,7 @@ interdit_x = [4]
 interdit_y = []
 count_x = []
 count_y = []
+
 compteur_passager = -1
 compteur_passager_assis = 0
 demarre = 1
@@ -57,14 +63,15 @@ nb_etape = 0
 #########################################
 # FONCTIONS
 
-# Fonctions pour création de la liste des passagers
+# Fonctions qui créent la liste des passagers au hasard
 
 
 def passagers(mat):
-    '''Créer un passager [[destination], bagage, couleur] dans une matrice.'''
+    """Créer un passager [[destination], bagage, couleur] dans une matrice."""
 
     global mat_2, interdit_x, interdit_y
 
+    # Coordonnées de leur siège/destination
     x = choice([i for i in range(1, 8) if i not in interdit_x])
     y = choice([i for i in range(1, 31) if i not in interdit_y])
 
@@ -77,7 +84,7 @@ def passagers(mat):
 
     interdit(x, y)
 
-    # bagages + couleur
+    # Détermination au hasard du/des bagage(s) avec la couleur associée
     mat[-1].append(rd.randint(0, 2))
 
     if mat[-1][1] == 0:
@@ -89,9 +96,9 @@ def passagers(mat):
 
 
 def interdit(x, y):
-    '''Compte combien de fois x, y sont apparus.
-    Si x est apparu 30 fois ou y est apparu 7 fois, il est enlevé des
-    possibilités de choix pour les places.'''
+    """Compte combien de fois x, y sont apparus.
+    Si x est apparu 30 fois ou y est apparu 6 fois, il est enlevé des
+    possibilités de choix pour les places."""
 
     global interdit_x, interdit_y, count_x, count_y
 
@@ -104,13 +111,12 @@ def interdit(x, y):
         interdit_y.append(y)
 
 
-# Fonctions pour le déplacement des passagers
+# Fonctions relatives au déplacement des passagers
 
-def convertit_siege_identifiant(x, y):  # colonne, rang
-    """Cette fonction prend en argument x et y qui sont les coordonnées d'où se
-    trouve un passager (ou bien où il doit aller).
-    Convertit ces coordonnées en identifiant de canvas.
-    Retourne l'identifiant du canevas"""
+def convertit_siege_identifiant(x, y):  # x pour la colonne, y pour le rang
+    """Cette fonction prend en argument x et y qui sont les coordonnées d'une
+    case de l'avion, puis convertit ces coordonnées en identifiant de canvas.
+    Retourne l'identifiant du canevas."""
 
     global NB_COLONNE, NB_RANG
 
@@ -123,19 +129,19 @@ def convertit_siege_identifiant(x, y):  # colonne, rang
 
 
 def entree_passager():
-    """ Prend en argument la liste d'un passager qui n'est pas dans l'avion.
+    """Prend en argument la liste d'un passager qui n'est pas encore dans l'avion.
     Teste si un nouveau passager peut entrer dans l'avion.
-    Si oui il rentre et on ajoute ses coordonnées actuelles à la liste la
-    représentant. Sinon rien ne se passe."""
+    Si oui il rentre et on ajoute ses coordonnées actuelles à la liste des
+    passagers déjà dans l'avion. Sinon rien ne se passe."""
 
     global compteur_passager, liste_passagers_in, mat_passagers
 
     if (avion.itemcget((convertit_siege_identifiant(4, 1)), "fill"))\
             == COULEUR_SIEGE_VIDE:
-        compteur_passager += 1
         # Prend le passager suivant dans la liste de tous les passagers.
+        compteur_passager += 1
+        # Si tous les passagers ne sont pas encore dans l'avion
         if compteur_passager < NB_PASSAGERS_MAX:
-            # Si tous les passagers ne sont pas encore dans l'avion
             avion.itemconfigure(convertit_siege_identifiant(4, 1),
                                 fill=mat_passagers[compteur_passager][2])
             liste_passagers_in.append(mat_passagers[compteur_passager])
@@ -143,18 +149,19 @@ def entree_passager():
 
 
 def deplace_passagers_in():
-    """Déplace tous les passages qui sont actuellement dans l'avion.
-    Fait entrer un passager si possible.
-    La fonction est répétée tous les TPS_ETAPES.
+    """Déplace tous les passagers qui sont actuellement dans l'avion. Fait entrer
+    un passager si possible. La fonction est répétée tous les TPS_ETAPES.
     Permet également de compter le nombre d'étapes nécessaires à
     l'installation des passagers."""
 
     global compteur_passager_assis, nb_etape, liste_passagers_in
 
+    # Compteur d'étapes
     if compteur_passager_assis < 180:
         nb_etape += 1
         compteur_etape()
 
+    # Déplace tous les passagers
     if liste_passagers_in != []:
         for i in range(len(liste_passagers_in)):
             deplace_1_passager(liste_passagers_in, i)
@@ -172,11 +179,11 @@ def convertisseur_couleur_case(x, y, couleur):
 
 
 def swipe_place(liste, n1, x_prime, y_prime):
-    """Permet de faire échanger deux places à des passagers, si l'un bloque
-    l'autre dans une rangée.
+    """Permet de faire échanger deux places à des passagers dans le cas où
+    l'un bloque l'autre dans une rangée.
     Prend en arguments:
     liste --> la liste de tous les passagers acutellement dans l'avion.
-    n1 --> l'indice auquel se trouve le passager qui est bloqué dans la liste.
+    n1 --> l'indice de la liste correspondant au passager bloqué.
     x_prime --> la coordonnée x où veut aller le passager n1
     y_prime --> la coordonnée y où veut aller le passager n1"""
 
@@ -192,12 +199,11 @@ def swipe_place(liste, n1, x_prime, y_prime):
         # Cherche le passager avec qui n1 doit échanger sa place.
         n2 = liste.index([[x_prime, y_prime], 0,
                          COULEUR_SIEGE_REMPLI, [x_prime, y_prime]])
-
         # Passager 2 à sa place
         x_passager2 = liste[n2][3][0]
         y_passager2 = liste[n2][3][1]
         couleur2 = liste[n2][2]
-
+        # Inverse les places des 2 passagers
         liste[n2][3][0], liste[n1][3][0] = x_passager1, x_passager2
         couleur2 = COULEUR_PASSAGER_0_BAGAGE
         convertisseur_couleur_case(x_passager2, y_passager2, couleur2)
@@ -212,6 +218,7 @@ def deplace_1_passager(liste, n):  # [[x, y], bagage, couleur, [x', y']]
     l'indice auquel correspond le passager dans cette liste (noté n).
     Puis déplace ou non le passager en fonction d'où il se trouve dans l'avion.
     Permet aussi de faire déposer les bagages de passagers."""
+
     global compteur_passager_assis
 
     # Coordonnées du siège du passager
@@ -285,7 +292,7 @@ def deplace_1_passager(liste, n):  # [[x, y], bagage, couleur, [x', y']]
 
 def demarrer():
     """Fonction démarrant la simulation.
-    Définit le temps par défaut et exécute la simulation"""
+    Définit le temps par défaut et exécute la simulation."""
     global TPS_ETAPES
     TPS_ETAPES = 50
     entree_passager()
@@ -293,21 +300,20 @@ def demarrer():
 
 
 def arreter():
-    """Fonction arrêtant la simulation.
-    Ferme la fenetre"""
+    """Fonction arrêtant la simulation : ferme la fenêtre."""
     racine.destroy()
 
 
 def pause():
     """Definit un temps d'étapes tellement grand que
-    la fonction est en virtuellement en pause"""
+    la fonction est en virtuellement en pause."""
     global TPS_ETAPES
     TPS_ETAPES = 3000000
 
 
 def relancer():
     """Remet le temps entre les étapes à zéro.
-    Relance la simulation après l'avoir mis en pause """
+    Relance la simulation après l'avoir mis en pause."""
     global TPS_ETAPES
     TPS_ETAPES = 50
     deplace_passagers_in()
@@ -315,15 +321,15 @@ def relancer():
 
 def etape_1():
     """Permet d'avancer la simulation d'une étape.
-    Met en pause la fonction après une étape"""
+    Met en pause la fonction après une étape."""
     global TPS_ETAPES
     TPS_ETAPES = 300000
     deplace_passagers_in()
 
 
 def etape_par_etape():
-    """Met un temps entre étapes qui fait que les étapes passent
-    assez une par une de manière distincte"""
+    """Augmente le temps entre étapes, par conséquent les étapes se succèdent
+    une par une de manière distincte."""
     global TPS_ETAPES
     TPS_ETAPES = 500
     deplace_passagers_in()
@@ -333,7 +339,8 @@ def recommencer():
     """Permet de recommencer la simulation du début.
     Remet les variable à "zéro", crée une nouvelle liste de passagers."""
     global mat_passagers, mat_2, liste_passagers_in, interdit_x, interdit_y,\
-        count_x, count_y, compteur_passager, compteur_passager_assis, demarre
+        count_x, count_y, compteur_passager, compteur_passager_assis,\
+        demarre, nb_etape
 
     # Remet tous les variables à "zéro"
     mat_passagers = []  # Liste de tous les passages
@@ -346,6 +353,8 @@ def recommencer():
     compteur_passager = -1
     compteur_passager_assis = 0
     demarre = 1
+    nb_etape = 0
+    compteur_etape()
 
     # Remet la couleur des sièges à "zéro".
     for j in range((NB_COLONNE*NB_RANG+1)):
@@ -359,31 +368,27 @@ def recommencer():
 
 def aide():
     """Affiche la fenetre d'aide et son message."""
-    msg.showinfo(title="Information", message="Bienvenue dans la fenêtre \
-d'information." + 2*"\n" + "Gris = Siège vide." + "\n"
+    msg.showinfo(title="Information",
+                 message="Bienvenue dans la fenêtre d'information."
+                 + 2*"\n" + "Gris = Siège vide." + "\n"
                  + "Vert = Passager correctement assis." + "\n"
                  + "Rose = Passager sans bagage." + "\n"
-                 + "Violet clair = Passager avec bagage." + "\n"
+                 + "Violet clair = Passager avec 1 bagage." + "\n"
                  + "Violet foncé = Passager avec 2 bagages.")
-
-
-# Autres fonctions
-
-
-def resultat():
-    pass
-# print(resultat)
 
 
 def compteur_etape():
     """Change le label: nombre_etape2 pour l'actualiser, ce label affiche le
     nombre d'étapes."""
     global nb_etape
-
     nombre_etape2["text"] = nb_etape
 
 
+# Fonction qui crée le quadrillage de l'avion.
+
 def quadrillage():
+    """ Fonction permettant de créer les cases représentant l'intérieur
+    de l'avion, avec les cases de sièges et celles de couloir."""
     i = 0
     j = 0
     while j < CANVAS_HEIGHT:
@@ -400,33 +405,42 @@ def quadrillage():
 
 
 avion = tk.Canvas(racine, height=CANVAS_HEIGHT, width=CANVAS_WIDTH)
-bord = tk.Canvas(racine, height=30, width=BORD_WIDHT, bg=COULEUR_SIEGE_VIDE)
+bord = tk.Canvas(racine, height=35, width=BORD_WIDHT, bg=COULEUR_BORD)
+# Boutons
 bouton_demarrer = tk.Button(racine, text='Démarrer', command=demarrer,
-                            relief="flat", bg=COULEUR_SIEGE_VIDE,
-                            fg=COULEUR_BOUTON_BORD)
-bouton_arreter = tk.Button(racine, text='Arrêt', command=arreter,
-                           relief="flat", bg=COULEUR_SIEGE_VIDE,
-                           fg=COULEUR_BOUTON_BORD)
-bouton_pause = tk.Button(racine, text='Pause', command=pause)
-bouton_relancer = tk.Button(racine, text='Relancer', command=relancer)
-bouton_etape_1 = tk.Button(racine, text='Etape +1', command=etape_1)
+                            relief="flat", bg=COULEUR_BORD,
+                            fg=COULEUR_BOUTON_BORD, font=('helvetica', '13'))
+bouton_arreter = tk.Button(racine, text='Arrêter', command=arreter,
+                           relief="flat", bg=COULEUR_BORD,
+                           fg=COULEUR_BOUTON_BORD, font=('helvetica', '13'))
+bouton_pause = tk.Button(racine, text='Pause', command=pause,
+                         font=('helvetica', '10'))
+bouton_relancer = tk.Button(racine, text='Relancer', command=relancer,
+                            font=('helvetica', '10'))
+bouton_etape_1 = tk.Button(racine, text='Etape +1', command=etape_1,
+                           font=('helvetica', '10'))
 bouton_etape_par_etape = tk.Button(racine, text='Etape par étape',
-                                   command=etape_par_etape)
+                                   command=etape_par_etape,
+                                   font=('helvetica', '10'))
 bouton_recommencer = tk.Button(racine, text='Recommencer', command=recommencer,
-                               relief="flat", bg=COULEUR_SIEGE_VIDE,
-                               fg=COULEUR_BOUTON_BORD)
+                               relief="flat", bg=COULEUR_BORD,
+                               fg=COULEUR_BOUTON_BORD,
+                               font=('helvetica', '13'))
 bouton_aide = tk.Button(racine, bitmap="info", command=aide,  relief="flat",
-                        bg=COULEUR_SIEGE_VIDE, fg=COULEUR_BOUTON_BORD)
-label_nombre_etape = tk.Label(racine, text="Nombre d'étapes")
-nombre_etape2 = tk.Label(racine, text='0')
+                        bg=COULEUR_BORD, fg=COULEUR_I)
+# Compteur d'étapes
+label_nombre_etape = tk.Label(racine, text="Nombre d'étapes :",
+                              font=('helvetica', '13'))
+nombre_etape2 = tk.Label(racine, text='0', font=('helvetica', '15'))
 
 
 #########################################
 # POSITIONNEMENT
 
 
-bord.grid(row=0, column=0, columnspan=15)
 avion.grid(row=2, rowspan=12, column=3, columnspan=4)
+bord.grid(row=0, column=0, columnspan=15)
+# Boutons
 bouton_demarrer.grid(row=0, column=0)
 bouton_arreter.grid(row=0, column=3)
 bouton_pause.grid(row=3, column=0)
@@ -434,9 +448,10 @@ bouton_relancer.grid(row=3, column=1)
 bouton_etape_1.grid(row=5, column=0)
 bouton_etape_par_etape.grid(row=5, column=1)
 bouton_recommencer.grid(row=0, column=1)
-bouton_aide.grid(row=0, column=6)
-label_nombre_etape.grid(row=9, column=0)
-nombre_etape2.grid(row=9, column=1)
+bouton_aide.grid(row=0, column=8)
+# Compteur d'étapes
+label_nombre_etape.grid(row=9, column=0, columnspan=1)
+nombre_etape2.grid(row=9, column=1, columnspan=2)
 
 
 avion.bind(quadrillage())
@@ -451,15 +466,16 @@ for i in range(180):
 
 
 def changespeed(speed):
-    """Crée un slider qui permet d'ajuster le temps inter-étapes"""
+    """Crée un slider qui permet d'ajuster le temps inter-étapes."""
     global TPS_ETAPES
     TPS_ETAPES = w1.get()
 
 
 w1 = tk.Scale(racine, from_=0, to=200, orient="horizontal",
               label='Temps entre les étapes (en ms)',
-              command=changespeed, length=200)
+              command=changespeed, length=200, font=('helvetica', '10'))
 w1.set(50)
 w1.grid(row=7, column=0, columnspan=2)
+
 
 racine.mainloop()
