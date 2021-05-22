@@ -36,7 +36,6 @@ NB_COLONNE = 7
 NB_PASSAGERS_MAX = 180
 X_COULOIR = 4
 TPS_ETAPES = 50  # temps entre chaque étape
-COMPTEUR_ETAPE = 0
 
 
 #########################################
@@ -52,6 +51,8 @@ count_y = []
 compteur_passager = -1
 compteur_passager_assis = 0
 demarre = 1
+nb_etape = 0
+
 
 #########################################
 # FONCTIONS
@@ -149,16 +150,16 @@ def entree_passager():
 def deplace_passagers_in():
     """Déplace tous les passages qui sont actuellement dans l'avion.
     Fait entrer un passager si possible.
-    La fonction est répétée tous les TPS_ETAPES."""
+    La fonction est répétée tous les TPS_ETAPES.
+    Permet également de compter le nombre d'étapes nécessaires à
+    l'installation des passagers."""
 
-    global liste_passagers_in, COMPTEUR_ETAPE, mat_passagers
+    global compteur_passager_assis, nb_etape, liste_passagers_in
 
-    for n in range(len(mat_passagers)):
-        if mat_passagers[n][0] != mat_passagers[n][3]:
-            tous_a_sa_place = False
-    if not tous_a_sa_place:
-        COMPTEUR_ETAPE += 1
-        print(COMPTEUR_ETAPE)
+    if compteur_passager_assis < 180:
+        nb_etape += 1
+        print(nb_etape)
+    compteur_etape()
 
     if liste_passagers_in != []:
         for i in range(len(liste_passagers_in)):
@@ -214,7 +215,7 @@ def deplace_1_passager(liste, n):  # [[x, y], bagage, couleur, [x', y']]
     l'indice auquel correspond le passager dans cette liste (noté n).
     Puis déplace ou non le passager en fonction d'où il se trouve dans l'avion.
     Permet aussi de faire déposer les bagages de passagers."""
-    global compteur_passager_assis, COMPTEUR_ETAPE
+    global compteur_passager_assis
 
     # Coordonnées du siège du passager
     coordonnees_final = liste[n][0]
@@ -378,6 +379,15 @@ def resultat():
     pass
 
 
+def compteur_etape():
+    global nb_etape, compteur_passager_assis
+
+    pass
+
+    # while compteur_passager_assis < 180:
+        # avion.itemconfig(nombre_etape2, text='')
+
+
 # print(resultat)
 
 
@@ -415,8 +425,9 @@ bouton_recommencer = tk.Button(racine, text='Recommencer', command=recommencer,
                                fg=COULEUR_BOUTON_BORD)
 bouton_aide = tk.Button(racine, bitmap="info", command=aide,  relief="flat",
                         bg=COULEUR_SIEGE_VIDE, fg=COULEUR_BOUTON_BORD)
-nombre_etape = tk.Label(racine, text="Nombre d'étapes :")
-# nombre_etapes = tk.Button(racine, command=resultat)
+nombre_etape = tk.Label(racine, text="Nombre d'étapes")
+nombre_etape2 = tk.Label(racine, text='0')
+
 
 #########################################
 # POSITIONNEMENT
@@ -433,6 +444,7 @@ bouton_etape_par_etape.grid(row=5, column=1)
 bouton_recommencer.grid(row=0, column=1)
 bouton_aide.grid(row=0, column=6)
 nombre_etape.grid(row=9, column=0)
+nombre_etape2.grid(row=9, column=1)
 
 
 avion.bind(quadrillage())
