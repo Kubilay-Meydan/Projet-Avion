@@ -331,8 +331,8 @@ def etape_par_etape():
     """Augmente le temps entre étapes, par conséquent les étapes se succèdent
     une par une de manière distincte."""
     global TPS_ETAPES
-    TPS_ETAPES = 500
-    deplace_passagers_in()
+    TPS_ETAPES = 1000
+    
 
 
 def recommencer():
